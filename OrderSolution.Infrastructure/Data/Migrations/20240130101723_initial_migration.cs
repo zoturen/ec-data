@@ -12,6 +12,17 @@ namespace OrderSolution.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CustomerAddresses",
                 columns: table => new
                 {
@@ -24,6 +35,12 @@ namespace OrderSolution.Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CustomerAddresses", x => x.CustomerId);
+                    table.ForeignKey(
+                        name: "FK_CustomerAddresses_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -39,30 +56,11 @@ namespace OrderSolution.Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CustomerDetails", x => x.CustomerId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CustomerAddressCustomerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CustomerDetailCustomerId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Customers_CustomerAddresses_CustomerAddressCustomerId",
-                        column: x => x.CustomerAddressCustomerId,
-                        principalTable: "CustomerAddresses",
-                        principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Customers_CustomerDetails_CustomerDetailCustomerId",
-                        column: x => x.CustomerDetailCustomerId,
-                        principalTable: "CustomerDetails",
-                        principalColumn: "CustomerId",
+                        name: "FK_CustomerDetails_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -109,16 +107,6 @@ namespace OrderSolution.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_CustomerAddressCustomerId",
-                table: "Customers",
-                column: "CustomerAddressCustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Customers_CustomerDetailCustomerId",
-                table: "Customers",
-                column: "CustomerDetailCustomerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderEntityId",
                 table: "OrderItems",
                 column: "OrderEntityId");
@@ -133,6 +121,12 @@ namespace OrderSolution.Infrastructure.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CustomerAddresses");
+
+            migrationBuilder.DropTable(
+                name: "CustomerDetails");
+
+            migrationBuilder.DropTable(
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
@@ -140,12 +134,6 @@ namespace OrderSolution.Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Customers");
-
-            migrationBuilder.DropTable(
-                name: "CustomerAddresses");
-
-            migrationBuilder.DropTable(
-                name: "CustomerDetails");
         }
     }
 }
