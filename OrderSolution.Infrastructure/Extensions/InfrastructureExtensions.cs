@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OrderSolution.Api;
 using OrderSolution.Infrastructure.Data;
 
 namespace OrderSolution.Infrastructure.Extensions;
@@ -13,6 +14,11 @@ public static class InfrastructureExtensions
         services.AddDbContext<CfContext>(x =>
         {
             x.UseNpgsql(builder.Configuration["postgres:cfConnectionString"]);
+        });
+        
+        services.AddDbContext<EcDbFirstContext>(x =>
+        {
+            x.UseNpgsql(builder.Configuration["postgres:dfConnectionString"]);
         });
     }
     
