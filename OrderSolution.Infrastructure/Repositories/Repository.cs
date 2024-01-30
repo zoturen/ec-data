@@ -57,7 +57,7 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
         return false;
     }
 
-    public async Task<List<TEntity>> GetAllAsync()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         try
         {
