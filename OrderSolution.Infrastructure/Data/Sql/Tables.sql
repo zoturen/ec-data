@@ -1,3 +1,5 @@
+-- dotnet ef dbcontext scaffold "Name=postgres:dfConnectionString" Npgsql.EntityFrameworkCore.PostgreSQL --context-dir ../OrderSolution.Infrastructure/Data --output-dir ../OrderSolution.Infrastructure/Entities/Dbf
+
 DROP TABLE IF EXISTS ProductDetails;
 DROP TABLE IF EXISTS ProductImages;
 DROP TABLE IF EXISTS Images;
