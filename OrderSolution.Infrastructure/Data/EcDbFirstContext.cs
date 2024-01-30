@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using OrderSolution.Infrastructure.Entities.Dbf;
 
 namespace OrderSolution.Api;
 

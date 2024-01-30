@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace OrderSolution.Api;
+﻿namespace OrderSolution.Infrastructure.Entities.Dbf;
 
 public partial class Image
 {

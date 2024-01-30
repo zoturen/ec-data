@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using OrderSolution.Infrastructure.Repositories.Abstractions;
 
 namespace OrderSolution.Infrastructure.Repositories;
 
