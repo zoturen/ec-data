@@ -16,4 +16,6 @@ public class CustomerDetailEntity
     public string Email { get; set; } = null!;
     [StringLength(20)]
     public string? PhoneNumber { get; set; }
+
+    public CustomerEntity Customer { get; set; } = null!;
 }

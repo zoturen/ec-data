@@ -16,4 +16,6 @@ public class CustomerAddressEntity
     public string ZipCode { get; set; } = null!;
     [StringLength(60)] // The United Kingdom of Great Britain and Northern Ireland = 56 characters
     public string Country { get; set; } = null!;
+
+    public CustomerEntity Customer { get; set; } = null!;
 }

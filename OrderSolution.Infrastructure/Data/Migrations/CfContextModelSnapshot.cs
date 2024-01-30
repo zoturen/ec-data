@@ -25,7 +25,6 @@ namespace OrderSolution.Infrastructure.Data.Migrations
             modelBuilder.Entity("OrderSolution.Infrastructure.Entities.CustomerAddressEntity", b =>
                 {
                     b.Property<Guid>("CustomerId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("City")
@@ -56,7 +55,6 @@ namespace OrderSolution.Infrastructure.Data.Migrations
             modelBuilder.Entity("OrderSolution.Infrastructure.Entities.CustomerDetailEntity", b =>
                 {
                     b.Property<Guid>("CustomerId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Email")
@@ -89,17 +87,7 @@ namespace OrderSolution.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CustomerAddressCustomerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CustomerDetailCustomerId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerAddressCustomerId");
-
-                    b.HasIndex("CustomerDetailCustomerId");
 
                     b.ToTable("Customers");
                 });
@@ -156,23 +144,26 @@ namespace OrderSolution.Infrastructure.Data.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("OrderSolution.Infrastructure.Entities.CustomerEntity", b =>
+            modelBuilder.Entity("OrderSolution.Infrastructure.Entities.CustomerAddressEntity", b =>
                 {
-                    b.HasOne("OrderSolution.Infrastructure.Entities.CustomerAddressEntity", "CustomerAddress")
-                        .WithMany()
-                        .HasForeignKey("CustomerAddressCustomerId")
+                    b.HasOne("OrderSolution.Infrastructure.Entities.CustomerEntity", "Customer")
+                        .WithOne("CustomerAddress")
+                        .HasForeignKey("OrderSolution.Infrastructure.Entities.CustomerAddressEntity", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OrderSolution.Infrastructure.Entities.CustomerDetailEntity", "CustomerDetail")
-                        .WithMany()
-                        .HasForeignKey("CustomerDetailCustomerId")
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("OrderSolution.Infrastructure.Entities.CustomerDetailEntity", b =>
+                {
+                    b.HasOne("OrderSolution.Infrastructure.Entities.CustomerEntity", "Customer")
+                        .WithOne("CustomerDetail")
+                        .HasForeignKey("OrderSolution.Infrastructure.Entities.CustomerDetailEntity", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CustomerAddress");
-
-                    b.Navigation("CustomerDetail");
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("OrderSolution.Infrastructure.Entities.OrderEntity", b =>
@@ -191,6 +182,15 @@ namespace OrderSolution.Infrastructure.Data.Migrations
                     b.HasOne("OrderSolution.Infrastructure.Entities.OrderEntity", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderEntityId");
+                });
+
+            modelBuilder.Entity("OrderSolution.Infrastructure.Entities.CustomerEntity", b =>
+                {
+                    b.Navigation("CustomerAddress")
+                        .IsRequired();
+
+                    b.Navigation("CustomerDetail")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OrderSolution.Infrastructure.Entities.OrderEntity", b =>
