@@ -71,7 +71,7 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
         return [];
     }
 
-    public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate)
     {
         try
         {

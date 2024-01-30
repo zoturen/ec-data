@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace OrderSolution.Infrastructure.Repositories;
+namespace OrderSolution.Infrastructure.Repositories.Abstractions;
 
 public interface IRepository <TEntity> where TEntity : class
 {
