@@ -89,11 +89,11 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
     {
         try
         {
-            var existingEntity = context.Set<TEntity>().SingleOrDefault(predicate);
+            var existingEntity = await context.Set<TEntity>().SingleOrDefaultAsync(predicate);
             if (existingEntity != null)
             {
                 context.Entry(existingEntity).CurrentValues.SetValues(entity);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
                 return true;
             }
         }
