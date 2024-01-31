@@ -2,7 +2,7 @@
 
 public partial class Product
 {
-    public string Id { get; set; } = null!;
+    public string Articlenumber { get; set; } = null!;
 
     public string Name { get; set; } = null!;
 
@@ -10,7 +10,7 @@ public partial class Product
 
     public decimal Price { get; set; }
 
-    public int Quantity { get; set; }
+    public int Stock { get; set; }
 
     public string Categoryid { get; set; } = null!;
 

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OrderSolution.Infrastructure.Entities.Dbf;
 
-namespace OrderSolution.Api;
+namespace OrderSolution.Infrastructure.Data;
 
 public partial class EcDbFirstContext : DbContext
 {
@@ -23,7 +21,6 @@ public partial class EcDbFirstContext : DbContext
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<Productdetail> Productdetails { get; set; }
-    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -49,11 +46,11 @@ public partial class EcDbFirstContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("products_pkey");
+            entity.HasKey(e => e.Articlenumber).HasName("products_pkey");
 
             entity.ToTable("products");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Articlenumber).HasColumnName("articlenumber");
             entity.Property(e => e.Categoryid).HasColumnName("categoryid");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Name)
@@ -62,7 +59,7 @@ public partial class EcDbFirstContext : DbContext
             entity.Property(e => e.Price)
                 .HasPrecision(7, 2)
                 .HasColumnName("price");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.Stock).HasColumnName("stock");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.Categoryid)

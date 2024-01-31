@@ -12,11 +12,11 @@ CREATE TABLE IF NOT EXISTS Categories (
 );
 
 CREATE TABLE IF NOT EXISTS Products (
-    Id text PRIMARY KEY NOT NULL,
+    ArticleNumber text PRIMARY KEY NOT NULL,
     Name varchar(100) NOT NULL,
     Description text NOT NULL,
     Price numeric(7,2) NOT NULL,
-    Quantity integer NOT NULL,
+    Stock integer NOT NULL,
     CategoryId text NOT NULL,
     FOREIGN KEY (CategoryId) REFERENCES Categories(Id)
 );
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS ProductImages (
     ProductId text NOT NULL,
     ImageId text NOT NULL,
     PRIMARY KEY (ProductId, ImageId),
-    FOREIGN KEY (ProductId) REFERENCES Products(Id),
+    FOREIGN KEY (ProductId) REFERENCES Products(ArticleNumber),
     FOREIGN KEY (ImageId) REFERENCES Images(Id)
 );
 
@@ -38,5 +38,5 @@ CREATE TABLE IF NOT EXISTS ProductDetails(
     ProductId text PRIMARY KEY NOT NULL,
     Color varchar(30) NOT NULL,
     Size varchar(30) NOT NULL,
-    FOREIGN KEY (ProductId) REFERENCES Products(Id)
+    FOREIGN KEY (ProductId) REFERENCES Products(ArticleNumber)
 );
