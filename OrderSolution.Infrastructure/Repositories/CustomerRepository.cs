@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using OrderSolution.Infrastructure.Data;
 using OrderSolution.Infrastructure.Entities;
+using OrderSolution.Infrastructure.Repositories.Abstractions;
 
 namespace OrderSolution.Infrastructure.Repositories;
 

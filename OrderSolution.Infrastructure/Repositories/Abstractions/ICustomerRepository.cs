@@ -1,7 +1,6 @@
 using OrderSolution.Infrastructure.Entities;
-using OrderSolution.Infrastructure.Repositories.Abstractions;
 
-namespace OrderSolution.Infrastructure.Repositories;
+namespace OrderSolution.Infrastructure.Repositories.Abstractions;
 
 public interface ICustomerRepository : IRepository<CustomerEntity>
 {
