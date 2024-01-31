@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OrderSolution.Api;
 using OrderSolution.Infrastructure.Data;
+using OrderSolution.Infrastructure.Repositories;
+using OrderSolution.Infrastructure.Repositories.Abstractions;
 
 namespace OrderSolution.Infrastructure.Extensions;
 
@@ -16,10 +17,20 @@ public static class InfrastructureExtensions
             x.UseNpgsql(builder.Configuration["postgres:cfConnectionString"]);
         });
         
-        services.AddDbContext<EcDbFirstContext>(x =>
+       services.AddDbContext<EcDbFirstContext>(x =>
         {
             x.UseNpgsql(builder.Configuration["postgres:dfConnectionString"]);
         });
+
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<ICustomerAddressRepository, CustomerAddressRepository>();
+        services.AddScoped<ICustomerDetailRepository, CustomerDetailRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IImageRepository, ImageRepository>();
+        services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IProductDetailRepository, ProductDetailRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>(); 
     }
     
     public static void UseInfrastructure(this IHost app)

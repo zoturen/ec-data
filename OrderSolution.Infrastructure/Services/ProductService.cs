@@ -22,7 +22,7 @@ public class ProductService(IProductRepository productRepository, ICategoryRepos
         return new List<ProductSimpleDto>();
     }
     
-    public async Task<ProductDto?> GetProductByIdAsync(string articleNumber)
+    public async Task<ProductDto?> GetProductByArticleNumberAsync(string articleNumber)
     {
         try
         {
