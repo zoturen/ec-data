@@ -5,7 +5,7 @@ namespace OrderSolution.Infrastructure.Entities;
 public class OrderItemEntity
 {
     public Guid OrderId { get; set; } // PK
-    public Guid ArticleNumber { get; set; } // PK
+    public string ArticleNumber { get; set; } = null!; // PK
     public int Quantity { get; set; }
     [Column(TypeName = "Numeric(7,2)")]
     public decimal UnitPrice { get; set; }
