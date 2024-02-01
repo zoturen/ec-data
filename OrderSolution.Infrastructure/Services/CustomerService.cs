@@ -9,7 +9,7 @@ public class CustomerService(ICustomerRepository customerRepository) : ICustomer
 {
     public async Task<CustomerDto> CreateAsync(CustomerCreateDto dto)
     {
-        var entity = dto.ToEntity();
+        var entity = dto.ToEntity(Guid.NewGuid());
         var result = await customerRepository.AddAsync(entity);
         return result == null! ? null! : result.ToDto();
     }
@@ -28,7 +28,7 @@ public class CustomerService(ICustomerRepository customerRepository) : ICustomer
     
     public async Task<bool> UpdateAsync(Guid id, CustomerCreateDto dto)
     {
-        var entity = dto.ToEntity();
+        var entity = dto.ToEntity(id);
         var result = await customerRepository.UpdateAsync(x => x.Id == id, entity);
         return result;
     }

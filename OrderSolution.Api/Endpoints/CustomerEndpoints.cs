@@ -37,7 +37,7 @@ public static class CustomerEndpoints
         customerEndpoint.MapPut("/{id:guid}", async (Guid id, CustomerCreateDto customerUpdateDto, ICustomerService customerService) =>
         {
             var result = await customerService.UpdateAsync(id, customerUpdateDto);
-            if (result)
+            if (!result)
                 return Results.NotFound();
 
             return Results.Ok();
@@ -46,7 +46,7 @@ public static class CustomerEndpoints
         customerEndpoint.MapDelete("/{id:guid}", async (Guid id, ICustomerService customerService) =>
         {
             var result = await customerService.DeleteAsync(id);
-            if (result)
+            if (!result)
                 return Results.NotFound();
 
             return Results.Ok();

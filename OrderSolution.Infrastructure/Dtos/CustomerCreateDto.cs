@@ -32,11 +32,11 @@ public class CustomerCreateDto
 
 public static partial class DtoExtensions
 {
-    public static CustomerEntity ToEntity(this CustomerCreateDto dto)
+    public static CustomerEntity ToEntity(this CustomerCreateDto dto, Guid id)
     {
         var entity = new CustomerEntity
         {
-            Id = Guid.NewGuid(),
+            Id = id
         };
 
         var customerAddress = new CustomerAddressEntity

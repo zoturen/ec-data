@@ -85,7 +85,7 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
         return null!;
     }
 
-    public async Task<bool> UpdateAsync(Expression<Func<TEntity, bool>> predicate, TEntity entity)
+    public virtual async Task<bool> UpdateAsync(Expression<Func<TEntity, bool>> predicate, TEntity entity)
     {
         try
         {
