@@ -24,4 +24,11 @@ public class OrderRepository(CfContext context) : Repository<OrderEntity>(contex
 
         return null!;
     }
+
+    public async Task<IEnumerable<OrderEntity>> GetOrdersByCustomerIdAsync(Guid customerId)
+    {
+        return await context.Orders
+            .Where(o => o.CustomerId == customerId)
+            .ToListAsync();
+    }
 }
