@@ -4,6 +4,8 @@ using Microsoft.Extensions.Hosting;
 using OrderSolution.Infrastructure.Data;
 using OrderSolution.Infrastructure.Repositories;
 using OrderSolution.Infrastructure.Repositories.Abstractions;
+using OrderSolution.Infrastructure.Services;
+using OrderSolution.Infrastructure.Services.Abstractions;
 
 namespace OrderSolution.Infrastructure.Extensions;
 
@@ -30,7 +32,12 @@ public static class InfrastructureExtensions
         services.AddScoped<IOrderItemRepository, OrderItemRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IProductDetailRepository, ProductDetailRepository>();
-        services.AddScoped<IProductRepository, ProductRepository>(); 
+        services.AddScoped<IProductRepository, ProductRepository>();
+
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IProductService, ProductService>();
     }
     
     public static void UseInfrastructure(this IHost app)
