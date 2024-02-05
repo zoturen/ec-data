@@ -15,6 +15,10 @@ public class CfContext(DbContextOptions<CfContext> options) : DbContext(options)
     {
         modelBuilder.Entity<OrderItemEntity>()
             .HasKey(x => new {x.OrderId, x.ArticleNumber });
+        
+        modelBuilder.Entity<OrderItemEntity>().HasOne(x => x.Order)
+            .WithMany(x => x.OrderItems)
+            .HasForeignKey(x => x.OrderId);
 
         modelBuilder.Entity<CustomerDetailEntity>()
             .HasIndex(x => x.Email).IsUnique();

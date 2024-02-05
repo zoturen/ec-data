@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrderSolution.Infrastructure.Data;
@@ -11,9 +12,11 @@ using OrderSolution.Infrastructure.Data;
 namespace OrderSolution.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CfContext))]
-    partial class CfContextModelSnapshot : ModelSnapshot
+    [Migration("20240205100822_update_orderItem_fk_orderId")]
+    partial class update_orderItem_fk_orderId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,7 +114,7 @@ namespace OrderSolution.Infrastructure.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("Numeric(10,2)");
+                        .HasColumnType("Numeric(7,2)");
 
                     b.HasKey("Id");
 
@@ -132,10 +135,10 @@ namespace OrderSolution.Infrastructure.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("Numeric(10,2)");
+                        .HasColumnType("Numeric(7,2)");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnType("Numeric(10,2)");
+                        .HasColumnType("Numeric(7,2)");
 
                     b.HasKey("OrderId", "ArticleNumber");
 
