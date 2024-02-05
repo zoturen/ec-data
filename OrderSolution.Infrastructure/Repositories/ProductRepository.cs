@@ -132,14 +132,19 @@ public class ProductRepository(EcDbFirstContext context) : Repository<Product>(c
         {
             if (product.Productdetail != null)
             {
-                context.Productdetails.Remove(product.Productdetail);
+                var productDetail = product.Productdetail;
+                product.Productdetail = null;
+                context.Productdetails.Remove(productDetail);
             }
-            
+
             if (product.Images.Count != 0)
             {
-                context.Images.RemoveRange(product.Images);
+                var images = product.Images.ToList();
                 product.Images.Clear();
+                context.Images.RemoveRange(images);
             }
+
+            await context.SaveChangesAsync();
             context.Products.Remove(product);
             await context.SaveChangesAsync();
             return true;
