@@ -1,3 +1,4 @@
+using OrderSolution.Api.Endpoints;
 using OrderSolution.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapCategoryEndpoints();
+app.MapCustomerEndpoints();
+app.MapOrderEndpoints();
+app.MapProductEndpoints();
 
 app.UseHttpsRedirection();
 app.UseInfrastructure();

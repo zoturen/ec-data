@@ -23,7 +23,7 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
         return null!;
     }
 
-    public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predicate)
     {
         try
         {
