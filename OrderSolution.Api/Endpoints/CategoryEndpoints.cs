@@ -5,7 +5,7 @@ namespace OrderSolution.Api.Endpoints;
 
 public static class CategoryEndpoints
 {
-    public static void AddCategoryEndpoints(this IEndpointRouteBuilder endpoints)
+    public static void MapCategoryEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var categoryEndpoints = endpoints.MapGroup("/categories")
             .WithTags("Categories API");
