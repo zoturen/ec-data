@@ -1,0 +1,51 @@
+@OrderSolution.Api_HostAddress = http://localhost:5041
+
+###
+
+POST {{OrderSolution.Api_HostAddress}}/customers/
+Content-Type: application/json
+
+{
+  "firstName": "CJ",
+  "lastName": "Jan",
+  "email": "hej2@test.com",
+  "phoneNumber": "123456789",
+  "street": "Dalvägen 0",
+  "city": "Stockholm",
+  "zipCode": "91234",
+  "country": "Sverige"
+}
+
+> {% client.global.set("customerId", response.body.id) %}
+###
+
+
+GET {{OrderSolution.Api_HostAddress}}/customers/{{customerId}}
+Accept: application/json
+
+###
+
+GET {{OrderSolution.Api_HostAddress}}/customers/
+
+###
+
+PUT {{OrderSolution.Api_HostAddress}}/customers/{{customerId}}
+Content-Type: application/json
+
+{
+  "firstName": "Sven",
+  "lastName": "Jan",
+  "email": "hej1@test.com",
+  "phoneNumber": "123456789",
+  "street": "Dalvägen 7",
+  "city": "Stockholm",
+  "zipCode": "91234",
+  "country": "Sverige"
+}
+
+###
+
+DELETE {{OrderSolution.Api_HostAddress}}/customers/{{customerId}}
+Accept: application/json
+
+###

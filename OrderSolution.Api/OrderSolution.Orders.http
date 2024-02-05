@@ -1,0 +1,30 @@
+@OrderSolution.Api_HostAddress = http://localhost:5041
+
+###
+
+POST {{OrderSolution.Api_HostAddress}}/orders
+Content-Type: application/json
+
+{
+  "customerId": "{{customerId}}",
+  "orderItems": [
+    {
+      "articleNumber": "Comp-001",
+      "quantity": 2
+    }
+  ]
+}
+
+> {% client.global.set("orderId", response.body.id) %}
+
+###
+
+GET {{OrderSolution.Api_HostAddress}}/orders/{{orderId}}
+
+###
+
+GET {{OrderSolution.Api_HostAddress}}/orders
+
+###
+
+GET {{OrderSolution.Api_HostAddress}}/orders?customerId={{customerId}}
