@@ -13,7 +13,7 @@ public class OrderService(IOrderRepository orderRepository, IProductService prod
         {
             Id = Guid.NewGuid(),
             PaidAt = default,
-            CreatedAt = DateTime.Now,
+            CreatedAt = DateTime.UtcNow,
             CustomerId = dto.CustomerId
         };
         
@@ -25,6 +25,11 @@ public class OrderService(IOrderRepository orderRepository, IProductService prod
             {
                 return null!; // should return a message to the user
             }
+
+            if (product.Stock < orderItem.Quantity)
+            {
+                continue; // should return a message to the user and leave the item in basket
+            }
             var orderItemEntity = new OrderItemEntity
             {
                 OrderId = order.Id,
@@ -33,13 +38,23 @@ public class OrderService(IOrderRepository orderRepository, IProductService prod
                 UnitPrice = product.Price,
                 TotalAmount = product.Price * orderItem.Quantity
             };
+            var productResult = await productService.UpdateProductStockAsync(product.ArticleNumber, product.Stock - orderItem.Quantity);
+            if (!productResult)
+            {
+                return null!; // should return a message to the user and leave the item in basket
+            }
             orderItems.Add(orderItemEntity);
         }
         order.OrderItems = orderItems;
         order.TotalAmount = orderItems.Sum(x => x.TotalAmount);
         
-        await orderRepository.AddAsync(order);
-        return new OrderDto(order.Id, order.CustomerId, order.TotalAmount, order.PaidAt, order.CreatedAt, []);
+        var orderEntity = await orderRepository.AddAsync(order);
+        if (orderEntity != null!)
+        {
+            return new OrderDto(order.Id, order.CustomerId, order.TotalAmount, order.PaidAt, order.CreatedAt, []);
+        }
+
+        return null!;
     }
     
     public async Task<OrderDto?> GetOrderAsync(Guid orderId)
