@@ -25,13 +25,9 @@ public static class InfrastructureExtensions
         });
 
         services.AddScoped<ICategoryRepository, CategoryRepository>();
-        services.AddScoped<ICustomerAddressRepository, CustomerAddressRepository>();
-        services.AddScoped<ICustomerDetailRepository, CustomerDetailRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IImageRepository, ImageRepository>();
-        services.AddScoped<IOrderItemRepository, OrderItemRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddScoped<IProductDetailRepository, ProductDetailRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
 
         services.AddScoped<ICategoryService, CategoryService>();
