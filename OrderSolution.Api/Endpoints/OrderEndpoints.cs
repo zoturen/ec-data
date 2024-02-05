@@ -19,16 +19,16 @@ public static class OrderEndpoints
             return Results.Created($"/orders/{result.Id}", result);
         });
         
-        orderEndpoints.MapGet("/", async ([FromQuery] Guid customerId, IOrderService orderService) =>
+        orderEndpoints.MapGet("/", async ([FromQuery] Guid? customerId, IOrderService orderService) =>
         {
             IEnumerable<OrderDto> orders;
-            if (customerId == Guid.Empty)
+            if (customerId != Guid.Empty && customerId != null)
             {
-                orders = await orderService.GetOrdersAsync();
+                orders = await orderService.GetOrdersAsync(customerId.Value);
             }
             else
             {
-                orders = await orderService.GetOrdersAsync(customerId);
+                orders = await orderService.GetOrdersAsync();
             }
             return Results.Ok(orders);
             
