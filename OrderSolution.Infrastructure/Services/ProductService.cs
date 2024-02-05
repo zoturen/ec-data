@@ -1,11 +1,12 @@
 using System.Diagnostics;
 using OrderSolution.Infrastructure.Dtos;
+using OrderSolution.Infrastructure.Entities.Dbf;
 using OrderSolution.Infrastructure.Repositories.Abstractions;
 using OrderSolution.Infrastructure.Services.Abstractions;
 
 namespace OrderSolution.Infrastructure.Services;
 
-public class ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository) : IProductService
+public class ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IImageRepository imageRepository) : IProductService
 {
     public async Task<IEnumerable<ProductSimpleDto>> GetAllProductsAsync()
     {
@@ -44,7 +45,8 @@ public class ProductService(IProductRepository productRepository, ICategoryRepos
             var categoryExists = await categoryRepository.ExistsAsync(x => x.Id == dto.CategoryId);
             if (!categoryExists)
                 return null!;
-
+            
+            
             var productEntity = dto.ToEntity();
             var product = await productRepository.AddAsync(productEntity);
             return product.ToDto();
@@ -56,14 +58,14 @@ public class ProductService(IProductRepository productRepository, ICategoryRepos
         return null!;
     }
     
-    public async Task<bool> UpdateProductAsync(string articleNumber, ProductCreateDto dto)
+    public async Task<bool> UpdateProductAsync(string articleNumber, ProductUpdateDto dto)
     {
         try
         {
             var categoryExists = await categoryRepository.ExistsAsync(x => x.Id == dto.CategoryId);
             if (!categoryExists)
                 return false;
-
+            
             var productEntity = dto.ToEntity();
             await productRepository.UpdateAsync(p => p.Articlenumber == articleNumber, productEntity);
             return true;
@@ -78,5 +80,47 @@ public class ProductService(IProductRepository productRepository, ICategoryRepos
     public async Task<bool> DeleteProductAsync(string articleNumber)
     {
         return await productRepository.DeleteAsync(p => p.Articlenumber == articleNumber);
+    }
+
+    public async Task<ProductDto> AddImageToProductAsync(string articleNumber, ProductImageCreateDto dto)
+    {
+        var exists = await productRepository.ExistsAsync(p => p.Articlenumber == articleNumber);
+        if (!exists)
+            return null!;
+        
+        var image = new Image
+        {
+            Id = Guid.NewGuid().ToString(),
+            Url = dto.ImageUrl
+        };
+        
+        var productEntity = await productRepository.AddImageAsync(articleNumber, image);
+
+        if (productEntity == null!)
+            return null!;
+        
+        return productEntity.ToDto();
+    }
+    
+    public async Task<bool> RemoveImageFromProductAsync(string articleNumber, Guid imageId)
+    {
+        var productResult = await productRepository.RemoveImageAsync(articleNumber, imageId);
+
+        if (productResult)
+        {
+            return await imageRepository.DeleteAsync(x => x.Id == imageId.ToString());
+        }
+
+        return false;
+    }
+
+    public async Task<bool> UpdateProductStockAsync(string articleNumber, int stock)
+    {
+        var product = await productRepository.GetAsync(p => p.Articlenumber == articleNumber);
+        if (product == null)
+            return false;
+        product.Stock = stock;
+        
+        return await productRepository.UpdateAsync(p => p.Articlenumber == articleNumber, product);
     }
 }

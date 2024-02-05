@@ -8,15 +8,16 @@ public static partial class DtoExtensions
 {
     public static ProductDto ToDto(this Product product)
     {
-        return new ProductDto(
-            product.Articlenumber,
+        var images = product.Images.Select(i => new ImageDto(i.Id, i.Url)).ToList();
+        var dto = new ProductDto( product.Articlenumber,
             product.Name,
             product.Description,
             product.Price,
-            product.Category.Name,
+            product.Category?.Name ?? null!,
             product.Stock,
-            product.Images.Select(i => new ImageDto(i.Url)).ToList(),
-            new ProductDetailDto(product.Productdetail?.Size, product.Productdetail?.Color)
-        );
+            images,
+            new ProductDetailDto(product.Productdetail?.Size, product.Productdetail?.Color));
+        
+        return dto;
     }
 }

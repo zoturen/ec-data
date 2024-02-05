@@ -26,7 +26,36 @@ public class ProductRepository(EcDbFirstContext context) : Repository<Product>(c
 
         return null!;
     }
-    
+
+    public override async Task<bool> UpdateAsync(Expression<Func<Product, bool>> predicate, Product entity)
+    {
+        try
+        {
+            var product = await context.Products
+                .Include(p => p.Productdetail)
+                .FirstOrDefaultAsync(predicate);
+            if (product != null)
+            {
+                context.Entry(product).CurrentValues.SetValues(entity);
+
+                
+                if (product.Productdetail != null)
+                {
+                    product.Productdetail.Color = entity.Productdetail?.Color ?? null!;
+                    product.Productdetail.Size = entity.Productdetail?.Size ?? null!;
+                }
+                
+                await context.SaveChangesAsync();
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine($"ERROR: {e.Message}");
+        }
+        return false;
+    }
+
     public override async Task<IEnumerable<Product>> GetAllAsync()
     {
         try
@@ -42,5 +71,80 @@ public class ProductRepository(EcDbFirstContext context) : Repository<Product>(c
         }
 
         return new List<Product>();
+    }
+
+    public async Task<Product> AddImageAsync(string articleNumber, Image image)
+    {
+        try
+        {
+            var product = await context.Products
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync(p => p.Articlenumber == articleNumber);
+
+            if (product != null)
+            {
+                product.Images.Add(image);
+                await context.SaveChangesAsync();
+                return product;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine($"ERROR: {e.Message}");
+        }
+        
+        return null!;
+    }
+
+    public async Task<bool> RemoveImageAsync(string articleNumber, Guid imageId)
+    {
+        try
+        {
+            var product = await context.Products
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync(p => p.Articlenumber == articleNumber);
+
+            var image = product?.Images.FirstOrDefault(i => i.Id == imageId.ToString());
+            if (image != null)
+            {
+                if (product!.Images.Remove(image))
+                {
+                    await context.SaveChangesAsync();
+                    return true;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine($"ERROR: {e.Message}");
+        }
+
+        return false;
+    }
+
+    public override async Task<bool> DeleteAsync(Expression<Func<Product, bool>> predicate)
+    {
+        var product = await context.Products
+            .Include(p => p.Images)
+            .Include(p => p.Productdetail)
+            .FirstOrDefaultAsync(predicate);
+        if (product != null)
+        {
+            if (product.Productdetail != null)
+            {
+                context.Productdetails.Remove(product.Productdetail);
+            }
+            
+            if (product.Images.Count != 0)
+            {
+                context.Images.RemoveRange(product.Images);
+                product.Images.Clear();
+            }
+            context.Products.Remove(product);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        return false;
     }
 }

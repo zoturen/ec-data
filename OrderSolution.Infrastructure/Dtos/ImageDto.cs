@@ -1,3 +1,3 @@
 namespace OrderSolution.Infrastructure.Dtos;
 
-public record ImageDto(string ImageUrl);
+public record ImageDto(string Id, string ImageUrl);

@@ -2,7 +2,7 @@ using OrderSolution.Infrastructure.Entities.Dbf;
 
 namespace OrderSolution.Infrastructure.Dtos;
 
-public class ProductCreateDto
+public class ProductUpdateDto
 {
     public string ArticleNumber { get; set; } = null!;
     public string Name { get; set; } = null!;
@@ -12,12 +12,12 @@ public class ProductCreateDto
     public string CategoryId { get; set; } = null!;
     public string Color { get; set; } = null!;
     public string Size { get; set; } = null!;
- 
+    
 }
 
 public static partial class DtoExtensions
 {
-    public static Product ToEntity(this ProductCreateDto dto)
+    public static Product ToEntity(this ProductUpdateDto dto)
     {
         return new Product
         {

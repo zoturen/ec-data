@@ -1,0 +1,74 @@
+@OrderSolution.Api_HostAddress = http://localhost:5041
+###
+
+POST {{OrderSolution.Api_HostAddress}}/products
+Content-Type: application/json
+
+{
+  "articleNumber": "Comp-011",
+  "name": "IBM z16",
+  "description": "most up to date mainframe manufactured by IBM",
+  "price": 25000,
+  "stock": 15,
+  "categoryId": "{{categoryId}}",
+  "color": "black",
+  "size": "19\""
+}
+
+###
+
+GET {{OrderSolution.Api_HostAddress}}/products
+Accept: application/json
+
+###
+
+GET {{OrderSolution.Api_HostAddress}}/products/Comp-001
+Accept: application/json
+
+###
+
+PUT {{OrderSolution.Api_HostAddress}}/products/Comp-011
+Content-Type: application/json
+
+{
+  "articleNumber": "Comp-011",
+  "name": "IBM z16",
+  "description": "most up not date mainframe manufactured by IBM",
+  "price": 25000,
+  "stock": 13,
+  "categoryId": "{{categoryId}}",
+  "color": "silver",
+  "size": "19\""
+}
+
+###
+
+DELETE {{OrderSolution.Api_HostAddress}}/products/Comp-011
+
+###
+
+POST {{OrderSolution.Api_HostAddress}}/products/Comp-011/images
+Content-Type: application/json
+
+{
+  "imageUrl": "https://www.redbooks.ibm.com/images/fp/z16_combined.png"
+}
+
+> {% client.global.set("imageId", response.body.images[0].id) %}
+
+###
+
+PUT {{OrderSolution.Api_HostAddress}}/products/Comp-011/images/{{imageId}}
+Content-Type: application/json
+
+{
+  "imageUrl": "https://developer.ibm.com/developer/default/blogs/a-tour-inside-the-ibm-z16/images/single-frame-z16.jpg"
+}
+
+###
+
+DELETE {{OrderSolution.Api_HostAddress}}/products/Comp-011/images/{{imageId}}
+Accept: application/json
+
+###
+
